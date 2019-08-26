@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BoredApp</string>
+    <string name="title_activity_intro">IntroActivity</string>
+
+    <string name="title_activity_intro_page_1">Page 1</string>
+    <string name="title_activity_intro_page_2">Page 2</string>
+    <string name="title_activity_intro_page_3">Page 3</string>
+    <string name="title_activity_intro_page_4">Page 4</string>
+</resources>
