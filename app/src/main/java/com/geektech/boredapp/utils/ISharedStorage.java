@@ -1,7 +1,9 @@
 package com.geektech.boredapp.utils;
 
 public interface ISharedStorage {
-    void setBoolean(String key, boolean value);
 
-    boolean getBoolean(String key, boolean defValue);
+    <T> void set(String key, T value);
+
+    <T> T get(String key, T defValue);
+
 }

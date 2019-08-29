@@ -14,10 +14,10 @@ public class AppPreferences {
     }
 
     boolean isFirstLaunch() {
-        return sharedStorage.getBoolean(PREF_IS_FIRST_LAUNCH, true);
+        return sharedStorage.get(PREF_IS_FIRST_LAUNCH, true);
     }
 
     void setLaunched() {
-        sharedStorage.setBoolean(PREF_IS_FIRST_LAUNCH, false);
+        sharedStorage.set(PREF_IS_FIRST_LAUNCH, false);
     }
 }

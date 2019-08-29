@@ -11,12 +11,30 @@ public class SharedStorage implements ISharedStorage {
     }
 
     @Override
-    public void setBoolean(String key, boolean value) {
-        sharedPreferences.edit().putBoolean(key, value).apply();
+    public <T> void set(String key, T value) {
+        if (value instanceof Integer) {
+            sharedPreferences.edit().putInt(key,(Integer) value).apply();
+        } else if (value instanceof String) {
+            sharedPreferences.edit().putString(key,(String) value).apply();
+        } else if (value instanceof Boolean) {
+            sharedPreferences.edit().putBoolean(key,(Boolean) value).apply();
+        } else {
+            //TODO: Add other types
+        }
     }
 
     @Override
-    public boolean getBoolean(String key, boolean defValue) {
-        return sharedPreferences.getBoolean(key, defValue);
+    public <T> T get(String key, T defValue) {
+        if (defValue instanceof Integer) {
+            return (T) Integer.valueOf(sharedPreferences.getInt(key,(Integer) defValue));
+        } else if (defValue instanceof String) {
+            return (T) sharedPreferences.getString(key,(String) defValue);
+        } else if (defValue instanceof Boolean) {
+            return (T) Boolean.valueOf(sharedPreferences.getBoolean(key,(Boolean) defValue));
+        } else {
+            //TODO: Add other types
+            return null;
+        }
     }
+
 }
