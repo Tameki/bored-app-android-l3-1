@@ -1,45 +1,43 @@
 package com.geektech.boredapp.data;
 
+import androidx.annotation.Nullable;
+
+import com.geektech.boredapp.core.CoreApiClient;
+import com.geektech.boredapp.core.ResponseHandler;
 import com.geektech.boredapp.model.BoredAction;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 
-public class BoredApiClient implements IBoredApiClient {
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://www.boredapi.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
+public class BoredApiClient extends CoreApiClient
+        implements IBoredApiClient {
 
-    BoredNetworkClient client = retrofit.create(BoredNetworkClient.class);
+    //TODO: Create getRetrofitClient(baseUrl, class) method in CoreApiClient
+    BoredNetworkClient client = getRetrofit("http://www.boredapi.com/")
+            .create(BoredNetworkClient.class);
+
+    @Nullable
+    private BoredAction lastAction;
 
     @Override
     public void getBoredAction(final BoredActionCallback callback) {
-        Call<BoredAction> call = client.getBoredAction();
-
-        call.enqueue(new Callback<BoredAction>() {
-            @Override
-            public void onResponse(Call<BoredAction> call, Response<BoredAction> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        callback.onSuccess(response.body());
-                    } else {
-                        callback.onFailure(new Exception("Body is null"));
-                    }
-                } else {
-                    callback.onFailure(new Exception("Response code " + response.code()));
+        if (lastAction == null) {
+            Call<BoredAction> call = client.getBoredAction();
+            call.enqueue(new ResponseHandler<BoredAction>() {
+                @Override
+                public void onSuccess(BoredAction result) {
+                    lastAction = result;
+                    callback.onSuccess(result);
                 }
-            }
 
-            @Override
-            public void onFailure(Call<BoredAction> call, Throwable t) {
-                callback.onFailure(new Exception(t));
-            }
-        });
+                @Override
+                public void onFailure(Exception e) {
+                    callback.onFailure(e);
+                }
+            });
+        } else {
+            callback.onSuccess(lastAction);
+        }
     }
 
     private interface BoredNetworkClient {
