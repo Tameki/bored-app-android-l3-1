@@ -13,7 +13,7 @@ public class BoredAction {
     private Float accessibility;
 
     @SerializedName("type")
-    private String type;
+    private EActionType type;
 
     @SerializedName("participants")
     private Integer participants;
@@ -24,7 +24,7 @@ public class BoredAction {
     @SerializedName("link")
     private String link;
 
-    public BoredAction(String key, String activity, Float accessibility, String type, Integer participants, Float price, String link) {
+    public BoredAction(String key, String activity, Float accessibility, EActionType type, Integer participants, Float price, String link) {
         this.key = key;
         this.activity = activity;
         this.accessibility = accessibility;
@@ -58,11 +58,11 @@ public class BoredAction {
         this.accessibility = accessibility;
     }
 
-    public String getType() {
+    public EActionType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(EActionType type) {
         this.type = type;
     }
 
