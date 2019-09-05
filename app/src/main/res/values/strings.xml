@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BoredApp</string>
+    <string name="app_name">GT BoredApp</string>
     <string name="title_activity_intro">IntroActivity</string>
 
     <string name="title_activity_intro_page_1">Page 1</string>

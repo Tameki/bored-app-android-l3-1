@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.refresh)
     void onClick(View view) {
-        Log.d("ololo", "On refresh click");
         refreshAction();
     }
 
@@ -60,11 +59,14 @@ public class MainActivity extends AppCompatActivity {
     private void refreshAction() {
         showLoading();
 
+        //TODO Fetch configs from View's
+
         App.boredApiClient.getBoredAction(new IBoredApiClient.BoredActionCallback() {
             @Override
             public void onSuccess(BoredAction action) {
                 hideLoading();
-                Log.d("ololo", "Response " + action.getActivity());
+                Log.d("ololo", "Response " + action.getActivity() + " " +
+                        action.getType());
             }
 
             @Override

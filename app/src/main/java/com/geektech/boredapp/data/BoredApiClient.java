@@ -1,13 +1,12 @@
 package com.geektech.boredapp.data;
 
-import androidx.annotation.Nullable;
-
 import com.geektech.boredapp.core.CoreApiClient;
 import com.geektech.boredapp.core.ResponseHandler;
 import com.geektech.boredapp.model.BoredAction;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public class BoredApiClient extends CoreApiClient
         implements IBoredApiClient {
@@ -16,32 +15,28 @@ public class BoredApiClient extends CoreApiClient
     BoredNetworkClient client = getRetrofit("http://www.boredapi.com/")
             .create(BoredNetworkClient.class);
 
-    @Nullable
-    private BoredAction lastAction;
-
+    //TODO: Pass type, minPrice, maxPrice, minAccessibility, maxAccessibility
     @Override
     public void getBoredAction(final BoredActionCallback callback) {
-        if (lastAction == null) {
-            Call<BoredAction> call = client.getBoredAction();
-            call.enqueue(new ResponseHandler<BoredAction>() {
-                @Override
-                public void onSuccess(BoredAction result) {
-                    lastAction = result;
-                    callback.onSuccess(result);
-                }
+        Call<BoredAction> call = client.getBoredAction("");
 
-                @Override
-                public void onFailure(Exception e) {
-                    callback.onFailure(e);
-                }
-            });
-        } else {
-            callback.onSuccess(lastAction);
-        }
+        call.enqueue(new ResponseHandler<BoredAction>() {
+            @Override
+            public void onSuccess(BoredAction result) {
+                callback.onSuccess(result);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                callback.onFailure(e);
+            }
+        });
     }
 
     private interface BoredNetworkClient {
         @GET("api/activity/")
-        Call<BoredAction> getBoredAction();
+        Call<BoredAction> getBoredAction(
+                @Query("key") String value //TODO: Pass type
+        );
     }
 }
