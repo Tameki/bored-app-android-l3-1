@@ -5,7 +5,10 @@ import com.geektech.boredapp.model.BoredAction;
 
 public interface IBoredApiClient {
 
-    void getBoredAction(BoredActionCallback callback);
+    void getBoredAction(
+            ActionRequestOptions requestOptions,
+            BoredActionCallback callback
+    );
 
     interface BoredActionCallback extends CoreCallback<BoredAction> {}
 }

@@ -7,16 +7,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.geektech.boredapp.App;
 import com.geektech.boredapp.R;
+import com.geektech.boredapp.data.ActionRequestOptions;
 import com.geektech.boredapp.data.IBoredApiClient;
 import com.geektech.boredapp.model.BoredAction;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
+
+    @BindView(R.id.action_like_img)
+    ImageView likeImg;
+
+    @BindView(R.id.action_like_container)
+    View likeImgContainer;
+
+    private boolean isLiked = false;
 
     @OnClick(R.id.refresh)
     void onClick(View view) {
@@ -38,6 +51,18 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         refreshAction();
+
+        likeImgContainer.setOnClickListener(view -> {
+            Animation anim = AnimationUtils.loadAnimation(this, R.anim.scale_anim);
+            likeImg.startAnimation(anim);
+
+            isLiked = !isLiked;
+            if (isLiked) {
+                likeImg.setImageResource(R.drawable.ic_heart_filled);
+            } else {
+                likeImg.setImageResource(R.drawable.ic_heart_empty);
+            }
+        });
     }
 
     //endregion
@@ -60,13 +85,20 @@ public class MainActivity extends AppCompatActivity {
         showLoading();
 
         //TODO Fetch configs from View's
+        ActionRequestOptions requestOptions = new ActionRequestOptions(
+                null,
+                0.0f,
+                1.0f,
+                0f,
+                1f,
+                null
+        );
 
-        App.boredApiClient.getBoredAction(new IBoredApiClient.BoredActionCallback() {
+        App.boredApiClient.getBoredAction(requestOptions, new IBoredApiClient.BoredActionCallback() {
             @Override
             public void onSuccess(BoredAction action) {
                 hideLoading();
-                Log.d("ololo", "Response " + action.getActivity() + " " +
-                        action.getType());
+                Log.d("ololo", "Response " + action.toString());
             }
 
             @Override

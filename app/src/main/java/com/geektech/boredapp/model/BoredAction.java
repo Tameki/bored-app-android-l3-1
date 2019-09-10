@@ -1,5 +1,7 @@
 package com.geektech.boredapp.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 public class BoredAction {
@@ -33,6 +35,8 @@ public class BoredAction {
         this.price = price;
         this.link = link;
     }
+
+    //region Getters/Setters
 
     public String getKey() {
         return key;
@@ -88,5 +92,14 @@ public class BoredAction {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    //endregion
+
+
+    @NonNull
+    @Override
+    public String toString() {
+        return activity + " - access - " + accessibility + " " + type + " - price - " + price + " , " + participants;
     }
 }

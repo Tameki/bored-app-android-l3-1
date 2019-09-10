@@ -1,5 +1,7 @@
 package com.geektech.boredapp.data;
 
+import android.util.Log;
+
 import com.geektech.boredapp.core.CoreApiClient;
 import com.geektech.boredapp.core.ResponseHandler;
 import com.geektech.boredapp.model.BoredAction;
@@ -15,10 +17,22 @@ public class BoredApiClient extends CoreApiClient
     BoredNetworkClient client = getRetrofit("http://www.boredapi.com/")
             .create(BoredNetworkClient.class);
 
-    //TODO: Pass type, minPrice, maxPrice, minAccessibility, maxAccessibility
     @Override
-    public void getBoredAction(final BoredActionCallback callback) {
-        Call<BoredAction> call = client.getBoredAction("");
+    public void getBoredAction(
+            ActionRequestOptions requestOptions,
+            final BoredActionCallback callback
+    ) {
+        Call<BoredAction> call = client.getBoredAction(
+                requestOptions.getKey(),
+                requestOptions.getType(),
+                requestOptions.getMinPrice(),
+                requestOptions.getMaxPrice(),
+                requestOptions.getMinAccessibility(),
+                requestOptions.getMaxAccessibility(),
+                requestOptions.getParticipants()
+        );
+
+        Log.d("ololo", "Url " + call.request().url().toString());
 
         call.enqueue(new ResponseHandler<BoredAction>() {
             @Override
@@ -33,10 +47,16 @@ public class BoredApiClient extends CoreApiClient
         });
     }
 
-    private interface BoredNetworkClient {
+    public interface BoredNetworkClient {
         @GET("api/activity/")
         Call<BoredAction> getBoredAction(
-                @Query("key") String value //TODO: Pass type
+                @Query("key") String key,
+                @Query("type") String type,
+                @Query("minprice") Float minPrice,
+                @Query("maxprice") Float maxPrice,
+                @Query("minaccessibility") Float minAccessibility,
+                @Query("maxaccessibility") Float maxAccessibility,
+                @Query("participants") Integer participants
         );
     }
 }
