@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.geektech.boredapp.R;
+import com.geektech.boredapp.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,19 +34,11 @@ public class IntroActivity extends AppCompatActivity {
         ArrayList<IntroPageConfig> pages = new ArrayList<>();
 
         pages.add(new IntroPageConfig(
-                R.string.title_activity_intro_page_2,
-                R.drawable.ic_launcher_foreground));
-
-        pages.add(new IntroPageConfig(
-                R.string.title_activity_intro_page_4,
-                R.drawable.ic_launcher_foreground));
-
-        pages.add(new IntroPageConfig(
                 R.string.title_activity_intro_page_1,
                 R.drawable.ic_launcher_foreground));
 
         pages.add(new IntroPageConfig(
-                R.string.title_activity_intro_page_4,
+                R.string.title_activity_intro_page_2,
                 R.drawable.ic_launcher_foreground));
 
         pages.add(new IntroPageConfig(
@@ -56,6 +49,14 @@ public class IntroActivity extends AppCompatActivity {
 
         viewPager = findViewById(R.id.intro_pager);
         viewPager.setAdapter(adapter);
+
+        findViewById(R.id.intro_next).setOnClickListener(view -> {
+            if (viewPager.getCurrentItem() == adapter.getCount() - 1) {
+                MainActivity.start(this);
+            } else {
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+            }
+        });
     }
 
     public class IntroPagerAdapter extends FragmentPagerAdapter {

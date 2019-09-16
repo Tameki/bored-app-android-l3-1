@@ -73,4 +73,31 @@ public class BoredApiClientTest {
         }
     }
 
+    @Test
+    public void boredParticipantsActionRequest() {
+        //Prepare
+        Integer participants = 2;
+
+        Call<BoredAction> call = boredApiClient.client.getBoredAction(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                participants
+        );
+
+        try {
+            //Interact
+            Response<BoredAction> response = call.execute();
+            BoredAction action = response.body();
+
+            //Assert
+            assertEquals(Integer.valueOf(2), action.getParticipants());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
